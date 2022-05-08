@@ -7,28 +7,22 @@ const initialState = {
     { id: '3', title: 'Something else', state: 'TASK_INBOX' },
     { id: '4', title: 'Something again', state: 'TASK_INBOX' },
   ],
+  error: null,
 };
-
-function taskStateReducer(taskState) {
-  return (state, action) => {
-    return {
-      ...state,
-      tasks: state.tasks.map((task) =>
-        task.id === action.id ? { ...task, state: taskState } : task
-      ),
-    };
-  };
-}
 
 const taskSlice = createSlice({
   name: 'task',
   initialState,
   reducers: {
     archiveTask: (state, action) => {
-      return taskStateReducer('TASK_ARCHIVED')(state, action);
+      state.tasks = state.tasks.map((task) =>
+        task.id === action.payload ? { ...task, state: 'TASK_ARCHIVED' } : task
+      );
     },
     pinTask: (state, action) => {
-      return taskStateReducer('TASK_ARCHIVED')(state, action);
+      state.tasks = state.tasks.map((task) =>
+        task.id === action.payload ? { ...task, state: 'TASK_PINNED' } : task
+      );
     },
   },
 });
