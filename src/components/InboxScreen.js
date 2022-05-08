@@ -1,10 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTasks } from '../lib/store';
 import TaskList from './TaskList';
 
-export function PureInboxScreen({ error }) {
+export default function InboxScreen() {
+  const dispatch = useDispatch();
+  // We're retrieving the error field from our updated store
+  const { error } = useSelector((state) => state.taskbox);
+  // The useEffect triggers the data fetching when the component is mounted
+  useEffect(() => {
+    dispatch(fetchTasks());
+  }, [dispatch]);
+
   if (error) {
     return (
       <div className="page lists-show">
@@ -16,7 +23,6 @@ export function PureInboxScreen({ error }) {
       </div>
     );
   }
-
   return (
     <div className="page lists-show">
       <nav>
@@ -28,14 +34,3 @@ export function PureInboxScreen({ error }) {
     </div>
   );
 }
-
-PureInboxScreen.propTypes = {
-  /** The error message */
-  error: PropTypes.string,
-};
-
-PureInboxScreen.defaultProps = {
-  error: null,
-};
-
-export default connect(({ task }) => ({ error: task.error }))(PureInboxScreen);
