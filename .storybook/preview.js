@@ -1,15 +1,20 @@
-import '../src/index.css'; //👈 The app's CSS file goes here
-// export const parameters = {
-//   actions: { argTypesRegex: '^on[A-Z].*' },
-//   controls: {
-//     matchers: {
-//       color: /(background|color)$/i,
-//       date: /Date$/,
-//     },
-//   },
-// };
+import '../src/index.css';
 
-// 👇 Configures Storybook to log the actions( onArchiveTask and onPinTask ) in the UI.
+// Registers the msw addon
+import { initialize, mswDecorator } from 'msw-storybook-addon';
+
+// Initialize MSW
+initialize();
+
+// Provide the MSW addon decorator globally
+export const decorators = [mswDecorator];
+
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
+  controls: {
+    matchers: {
+      color: /(background|color)$/i,
+      date: /Date$/,
+    },
+  },
 };
